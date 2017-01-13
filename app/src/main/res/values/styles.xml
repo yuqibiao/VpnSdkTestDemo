@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowButtonStyle">@style/Base.Widget.AppCompat.ActionButton.Overflow.my</item>
+    </style>
+
+    <!--弹出菜单的主题-->
+    <style name="MyPopupTheme" parent="ThemeOverlay.AppCompat.Dark">
+        <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
+        <item name="overlapAnchor">true</item>
+    </style>
+
+    <!--popMenu样式-->
+    <style name="Base.Widget.AppCompat.ActionButton.Overflow.my" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">
+        <!--菜单的图标-->
+        <item name="srcCompat">@drawable/tb_menu</item>
+    </style>
+
+    <!--ToolBar的样式-->
+    <style name="BaseToolBarStyle" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="popupTheme">@style/MyPopupTheme</item>
+        <item name="titleTextColor">@color/usualWhite</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!-- dialog 的style -->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground"> @android:color/transparent </item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!--dialog动画的style-->
+    <style name="dialog_anim" parent="@android:style/Theme.Dialog">
+        <item name="android:windowEnterAnimation">@anim/modal_in</item>
+        <item name="android:windowExitAnimation">@anim/modal_out</item>
+    </style>
+
+</resources>

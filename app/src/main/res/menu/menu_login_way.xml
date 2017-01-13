@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/login_by_psw" android:title="用户名和密码方式"></item>
+    <item android:id="@+id/login_by_cert" android:title="证书的方式"></item>
+
+</menu>

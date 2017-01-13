@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+    </style>
+
+   <style name="MyToolBarStyle" parent="BaseToolBarStyle">
+       <item name="android:elevation">@dimen/elevation_6</item>
+   </style>
+
+
+</resources>

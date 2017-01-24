@@ -24,6 +24,8 @@ import com.vpn.vpnsdktestdemo.utils.edit_text_check.ValidationClient;
 import sslvpn.sdk.IVpnCallBack;
 import sslvpn.sdk.VpnClient;
 
+import static sslvpn.sdk.VpnClient.getInstances;
+
 /**
  * 功能：登录界面
  *
@@ -34,7 +36,7 @@ public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "LoginActivity";
     private LoginType loginType;
-    private CheckBox cbRemeber;
+    private CheckBox cbRemember;
     private CheckBox cbCompatibility;
     private LogicUtils logicUtils;
     private TextInputLayout tilPwdAddress;
@@ -75,7 +77,7 @@ public class LoginActivity extends BaseActivity {
     protected void initBefore() {
         super.initBefore();
         logicUtils = LogicUtils.getInstance(this);
-        vpnClient = VpnClient.getInstances();
+        vpnClient = getInstances();
         validationClient = new ValidationClient();
         loginType = LoginType.BY_PWD;
     }
@@ -101,17 +103,20 @@ public class LoginActivity extends BaseActivity {
        // validationClient.check(tilCertPwd);
 
         ibFileChoice = getView(R.id.ib_file_choice);
-        cbRemeber = getView(R.id.cb_remember);
+        cbRemember = getView(R.id.cb_remember);
         cbCompatibility = getView(R.id.cb_compatibility);
 
         inflateIfRem();
     }
 
+    /**
+     * 记住密码后自动填充
+     */
     private void inflateIfRem() {
         String[] pwdLoginInfo = logicUtils.getByPwdLoginInfo();
         String[] certLoginInfo = logicUtils.getByCertLoginInfo();
         if (logicUtils.isRemember()){
-            cbRemeber.setChecked(true);
+            cbRemember.setChecked(true);
         }
         if (pwdLoginInfo != null){
             tilPwdAddress.getEditText().setText(pwdLoginInfo[0]);
@@ -142,6 +147,14 @@ public class LoginActivity extends BaseActivity {
      * @param view
      */
     public void toLogin(View view){
+
+        if(vpnClient.getVPNConnState() == VpnClient.VPN_CONNECTED){//已经连接
+            Toast.makeText(this, "VPN 已经连接", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(LoginActivity.this , MainActivity.class));
+            LoginActivity.this.finish();
+            return;
+        }
+
         final LoadingDialog dialog = new LoadingDialog(this);
         //模式 0：普通模式 1：兼容模式
         String oldvers;
@@ -159,7 +172,6 @@ public class LoginActivity extends BaseActivity {
                 }
 
                 dialog.show();
-
                 //服务器地址
                 final String server = tilPwdAddress.getEditText().getText().toString() ;
                 //认证类型 0：用户和密码认证	1：证书认证	2：TF卡加密认证
@@ -169,15 +181,15 @@ public class LoginActivity extends BaseActivity {
                 //密码
                 final String vpnPsw = tilPwd.getEditText().getText().toString();
                 String[] authInfo={oldvers, server, authType, vpnUsername, vpnPsw};
-                vpnClient.startVpn(authInfo, this, new IVpnCallBack() {
+
+                vpnClient.startVpn(authInfo, LoginActivity.this, new IVpnCallBack() {
                     @Override
                     public void vpnCallBack(int status ,  String s) {
                         Log.e(TAG, "vpnCallBack: ===i="+status+"result :" +s );
                         if(status==200){
-                            dialog.dismiss();
                             startActivity(new Intent(LoginActivity.this , MainActivity.class));
                             LoginActivity.this.finish();
-                            if(cbRemeber.isChecked()){
+                            if(cbRemember.isChecked()){
                                 logicUtils.saveLoginByPwdInfo(server , vpnUsername , vpnPsw);
                             }else{
                                 logicUtils.removeLoginByPwdInfo();
@@ -189,6 +201,7 @@ public class LoginActivity extends BaseActivity {
                             msg.obj = "错误："+s;
                             mHandler.sendMessage(msg);
                         }
+                        dialog.dismiss();
                     }
                 });
                 break;
@@ -215,10 +228,9 @@ public class LoginActivity extends BaseActivity {
                     public void vpnCallBack(int status, String s) {
                         Log.e(TAG, "vpnCallBack: ===i="+status+"result :" +s );
                         if(status==200){
-                            dialog.dismiss();
                             startActivity(new Intent(LoginActivity.this , MainActivity.class));
                             LoginActivity.this.finish();
-                            if(cbRemeber.isChecked()){
+                            if(cbRemember.isChecked()){
                                 logicUtils.saveLoginByCertInfo(server , certPath , certPsw);
                             }else{
                                 logicUtils.removeLoginByCertInfo();
@@ -230,6 +242,7 @@ public class LoginActivity extends BaseActivity {
                             msg.obj = "错误："+s;
                             mHandler.sendMessage(msg);
                         }
+                        dialog.dismiss();
                     }
                 });
                 break;

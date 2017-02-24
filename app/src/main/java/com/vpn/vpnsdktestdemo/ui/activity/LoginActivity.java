@@ -158,7 +158,7 @@ public class LoginActivity extends BaseActivity {
         final LoadingDialog dialog = new LoadingDialog(this);
         //模式 0：普通模式 1：兼容模式
         String oldvers;
-        if (cbCompatibility.isEnabled()){
+        if (cbCompatibility.isChecked()){
             oldvers =Integer.toString(1);
         }else{
             oldvers =Integer.toString(0);

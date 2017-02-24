@@ -1,12 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionOverflowButtonStyle">@style/Base.Widget.AppCompat.ActionButton.Overflow.my</item>
+        <!--<item name="actionOverflowButtonStyle">@style/Base.Widget.AppCompat.ActionButton.Overflow.my</item>-->
+    </style>
+
+    <style name="MyAppTheme" parent="BaseAppTheme">
     </style>
 
     <!--弹出菜单的主题-->
@@ -29,6 +32,9 @@
         <item name="titleTextColor">@color/usualWhite</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="MyToolBarStyle" parent="BaseToolBarStyle">
     </style>
 
     <!-- dialog 的style -->
